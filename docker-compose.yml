@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  rutx-ai:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "80:8000"
+    volumes:
+      - ./shared_logs:/app/logs   
+    environment:
+      - ENVIRONMENT=production
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - ROBOFLOW_API_KEY=${ROBOFLOW_API_KEY}
+      - ROBOFLOW_API_URL=${ROBOFLOW_API_URL}
+      - LIVEKIT_API_KEY=${LIVEKIT_API_KEY}
+      - LIVEKIT_API_SECRET=${LIVEKIT_API_SECRET}
+      - LIVEKIT_URL=${LIVEKIT_URL}
+      - LIVEKIT_API_KEY_RTX=${LIVEKIT_API_KEY_RTX}
+      - LIVEKIT_API_SECRET_RTX=${LIVEKIT_API_SECRET_RTX}
+      - LIVEKIT_URL_RTX=${LIVEKIT_URL_RTX}
+      - DEEPGRAM_API_KEY=${DEEPGRAM_API_KEY}
+      - VOICE_MEMO_GEMINI_API_KEY=${VOICE_MEMO_GEMINI_API_KEY}
+      - PLANOGRAM_GEMINI_API_KEY=${PLANOGRAM_GEMINI_API_KEY}
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
